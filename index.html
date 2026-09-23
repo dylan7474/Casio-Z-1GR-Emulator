@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CASIO Z-1GR 16-Bit Pocket Computer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --lcd-pixel-on: #152216;
+      --lcd-pixel-off: #82987e;
+      --lcd-bg: #8ca388;
+      --body-chassis: #25282d;
+      --panel-plate: #1c1f24;
+    }
+
+    body {
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #0f1115;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, #0f1115 0%, #15181e 100%);
+      background-size: 20px 20px, 100% 100%;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Beveled Pocket Computer Keys */
+    .p-key {
+      position: relative;
+      touch-action: manipulation;
+      transition: all 0.05s ease;
+      box-shadow: 0 3px 0 #0d0f12, 0 4px 5px rgba(0, 0, 0, 0.5);
+    }
+    .p-key:active, .p-key.active-key {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #0d0f12, 0 2px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Key color variations */
+    .key-char {
+      background: linear-gradient(180deg, #383e47 0%, #292d34 100%);
+      color: #e2e8f0;
+      border: 1px solid #4a525d;
+    }
+    .key-num {
+      background: linear-gradient(180deg, #edf2f7 0%, #cbd5e1 100%);
+      color: #0f172a;
+      border: 1px solid #ffffff;
+      box-shadow: 0 3px 0 #64748b, 0 4px 5px rgba(0,0,0,0.3);
+    }
+    .key-num:active, .key-num.active-key {
+      box-shadow: 0 1px 0 #64748b, 0 2px 2px rgba(0,0,0,0.3);
+    }
+    .key-accent {
+      background: linear-gradient(180deg, #d97706 0%, #b45309 100%);
+      color: #fff;
+      border: 1px solid #f59e0b;
+    }
+    .key-c {
+      background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      border: 1px solid #60a5fa;
+    }
+    .key-break {
+      background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);
+      color: #fff;
+      border: 1px solid #ef4444;
+    }
+    .key-enter {
+      background: linear-gradient(180deg, #059669 0%, #047857 100%);
+      color: #fff;
+      border: 1px solid #34d399;
+    }
+    .key-fn {
+      background: linear-gradient(180deg, #475569 0%, #334155 100%);
+      color: #f8fafc;
+      border: 1px solid #64748b;
+    }
+
+    /* Legends above keys */
+    .shift-sub {
+      color: #f59e0b;
+      font-size: 8px;
+      font-weight: 700;
+      line-height: 9px;
+    }
+
+    /* LCD Glare & Bezel */
+    .lcd-surround {
+      background: linear-gradient(145deg, #181b20 0%, #111317 100%);
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.9), inset -1px -1px 3px rgba(255,255,255,0.1);
+    }
+    .lcd-screen-bezel {
+      background-color: var(--lcd-bg);
+      box-shadow: inset 3px 3px 8px rgba(0,0,0,0.65), inset -2px -2px 6px rgba(255,255,255,0.25);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 flex flex-col justify-between items-center p-2 sm:p-4">
+
+  <header class="w-full max-w-5xl flex flex-wrap items-center justify-between gap-2 py-2 px-3 mb-2 bg-slate-900/80 backdrop-blur border border-slate-800 rounded-xl shadow-lg">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <h1 class="text-sm sm:text-base font-bold tracking-wide text-slate-100 flex items-center gap-2">
+        <span class="tracking-widest text-slate-300">CASIO</span>
+        <span class="text-xs bg-slate-800 text-amber-400 px-2 py-0.5 rounded border border-amber-500/30">Z-1GR</span>
+        <span class="text-xs text-slate-400 font-normal hidden md:inline">16-Bit CPU &bull; 4-Line Dot Matrix &bull; BASIC &amp; C Interpreter</span>
+      </h1>
+    </div>
+
+    <!-- Quick action tools -->
+    <div class="flex items-center gap-2 text-xs">
+      <!-- Contrast slider -->
+      <div class="flex items-center gap-1.5 bg-slate-800 px-2 py-1 rounded border border-slate-700">
+        <span class="text-[10px] text-slate-400">CONTRAST</span>
+        <input id="contrastSlider" type="range" min="30" max="100" value="85" class="w-16 h-1 accent-amber-500 cursor-pointer">
+      </div>
+
+      <!-- Sound toggle -->
+      <button id="soundToggleBtn" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-slate-300 flex items-center gap-1 transition">
+        <span id="soundIcon">🔊</span>
+        <span id="soundLabel" class="hidden sm:inline">Sound</span>
+      </button>
+
+      <!-- Presets & Manual -->
+      <button id="presetBtn" class="px-2.5 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 rounded flex items-center gap-1 transition">
+        <span>💾</span> Examples
+      </button>
+
+      <button id="manualBtn" class="px-2.5 py-1 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/40 rounded flex items-center gap-1 transition">
+        <span>📖</span> Manual
+      </button>
+    </div>
+  </header>
+
+  <main class="w-full max-w-5xl flex flex-col items-center justify-center">
+    
+    <div class="w-full bg-[#22262c] rounded-3xl p-3 sm:p-5 shadow-2xl border-4 border-[#121417] relative">
+      
+      <!-- Top Badging Banner -->
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-2 mb-3">
+        <div class="flex flex-col">
+          <div class="flex items-baseline gap-2">
+            <span class="text-base sm:text-lg font-black tracking-widest text-slate-100 font-sans">CASIO</span>
+            <span class="text-[11px] sm:text-xs tracking-wider text-amber-400 font-semibold font-sans uppercase">Super College Personal Computer</span>
+          </div>
+          <span class="text-[9px] sm:text-[10px] text-slate-400 tracking-wider">16-Bit CPU &bull; RAM 32KB &bull; DUAL-MODE GRAPHIC DISPLAY</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- 16-Bit CPU Badge -->
+          <div class="bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-700 rounded px-2.5 py-0.5 text-center shadow-inner">
+            <span class="text-[9px] block text-slate-400 tracking-tighter">PROCESSOR</span>
+            <span class="text-[11px] font-black text-amber-400 tracking-wider">16-Bit CPU</span>
+          </div>
+
+          <!-- Model badge -->
+          <div class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1">
+            <span class="text-xs sm:text-sm font-black italic tracking-widest text-slate-100">Z-1<span class="text-amber-400">GR</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LCD DISPLAY COMPARTMENT -->
+      <div class="lcd-surround p-2.5 sm:p-3 rounded-xl border-2 border-slate-800 shadow-inner mb-3">
+        
+        <!-- Status Annunciator Ribbon -->
+        <div class="flex justify-between items-center text-[10px] sm:text-[11px] font-bold tracking-widest border-b border-[#6f856c]/30 pb-1 mb-1 text-[#1c291b]">
+          <div class="flex gap-2.5">
+            <span id="annMenu" class="px-1 rounded bg-[#1e2a1d] text-[#8ca388]">MENU</span>
+            <span id="annBasic" class="opacity-20">BASIC</span>
+            <span id="annC" class="opacity-20">C</span>
+            <span id="annCalc" class="opacity-20">CALC</span>
+            <span id="annCasl" class="opacity-20">CASL</span>
+          </div>
+          
+          <div class="flex gap-2">
+            <span id="annShift" class="opacity-20 bg-amber-900 text-amber-200 px-1 rounded">SHIFT</span>
+            <span id="annCaps" class="opacity-20 bg-slate-900 text-slate-200 px-1 rounded">CAPS</span>
+            <span id="annDeg" class="font-bold">DEG</span>
+            <span id="annRad" class="opacity-20">RAD</span>
+            <span id="annGra" class="opacity-20">GRA</span>
+            <span id="annBusy" class="opacity-20 text-red-900">BUSY</span>
+          </div>
+        </div>
+
+        <!-- Authentic 192x32 Dot-Matrix LCD Canvas -->
+        <div class="lcd-screen-bezel p-1.5 sm:p-2 rounded-lg flex items-center justify-center overflow-x-auto">
+          <canvas id="lcdCanvas" width="576" height="96" class="w-full max-w-[860px] h-auto rounded shadow-inner block" style="image-rendering: pixelated;"></canvas>
+        </div>
+
+        <!-- LCD Bottom Subtext -->
+        <div class="flex justify-between items-center text-[9px] sm:text-[10px] text-[#243522] font-mono font-semibold pt-1">
+          <span id="lcdBottomLeft">CASIO 16-BIT ARCHITECTURE &bull; 80L188EB EMULATION</span>
+          <span id="lcdMemoryFree">FREE: 26,604 BYTES</span>
+        </div>
+      </div>
+
+      <!-- KEYBOARD CONSOLE -->
+      <div class="bg-[#181b20] p-2 sm:p-3 rounded-2xl border border-slate-700 shadow-md">
+        
+        <!-- Top Function / Mode Row: [MENU] [CALC] [BASIC] [C] [CASL] [CONT] [CLEAR] [BREAK] -->
+        <div class="grid grid-cols-8 gap-1 sm:gap-1.5 mb-2">
+          <button id="keyMenu" class="p-key key-accent h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold tracking-tight">MENU</button>
+          <button id="keyCalc" class="p-key key-fn h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold">CALC</button>
+          <button id="keyBasic" class="p-key key-fn h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold">BASIC</button>
+          <button id="keyC" class="p-key key-c h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold">C-MODE</button>
+          <button id="keyCasl" class="p-key key-fn h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold">CASL</button>
+          <button id="keyCont" class="p-key key-fn h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold">CONT</button>
+          <button id="keyCls" class="p-key key-char h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold text-amber-300">CLS</button>
+          <button id="keyBreak" class="p-key key-break h-8 sm:h-9 rounded-md text-[10px] sm:text-xs font-bold tracking-wider">BREAK</button>
+        </div>
+
+        <!-- Main Body: Left QWERTY Terminal (cols 9) + Right Numeric & D-Pad Keypad (cols 5) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-2">
+          
+          <!-- LEFT 8 COLS: QWERTY KEYBOARD -->
+          <div class="lg:col-span-8 flex flex-col gap-1.5 bg-[#1f2329] p-2 rounded-xl border border-slate-700/60">
+            
+            <!-- Row 1: Numbers / Math symbols -->
+            <div class="grid grid-cols-10 gap-1">
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">!</span>
+                <button data-key="1" class="p-key key-char w-full h-8 rounded text-xs font-bold">1</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">"</span>
+                <button data-key="2" class="p-key key-char w-full h-8 rounded text-xs font-bold">2</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">#</span>
+                <button data-key="3" class="p-key key-char w-full h-8 rounded text-xs font-bold">3</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">$</span>
+                <button data-key="4" class="p-key key-char w-full h-8 rounded text-xs font-bold">4</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">%</span>
+                <button data-key="5" class="p-key key-char w-full h-8 rounded text-xs font-bold">5</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">&amp;</span>
+                <button data-key="6" class="p-key key-char w-full h-8 rounded text-xs font-bold">6</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">'</span>
+                <button data-key="7" class="p-key key-char w-full h-8 rounded text-xs font-bold">7</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">(</span>
+                <button data-key="8" class="p-key key-char w-full h-8 rounded text-xs font-bold">8</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">)</span>
+                <button data-key="9" class="p-key key-char w-full h-8 rounded text-xs font-bold">9</button>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="shift-sub">=</span>
+                <button data-key="0" class="p-key key-char w-full h-8 rounded text-xs font-bold">0</button>
+              </div>
+            </div>
+
+            <!-- Row 2: Q W E R T Y U I O P -->
+            <div class="grid grid-cols-10 gap-1">
+              <button data-key="Q" class="p-key key-char h-8 rounded text-xs font-bold">Q</button>
+              <button data-key="W" class="p-key key-char h-8 rounded text-xs font-bold">W</button>
+              <button data-key="E" class="p-key key-char h-8 rounded text-xs font-bold">E</button>
+              <button data-key="R" class="p-key key-char h-8 rounded text-xs font-bold">R</button>
+              <button data-key="T" class="p-key key-char h-8 rounded text-xs font-bold">T</button>
+              <button data-key="Y" class="p-key key-char h-8 rounded text-xs font-bold">Y</button>
+              <button data-key="U" class="p-key key-char h-8 rounded text-xs font-bold">U</button>
+              <button data-key="I" class="p-key key-char h-8 rounded text-xs font-bold">I</button>
+              <button data-key="O" class="p-key key-char h-8 rounded text-xs font-bold">O</button>
+              <button data-key="P" class="p-key key-char h-8 rounded text-xs font-bold">P</button>
+            </div>
+
+            <!-- Row 3: A S D F G H J K L ; -->
+            <div class="grid grid-cols-10 gap-1">
+              <button data-key="A" class="p-key key-char h-8 rounded text-xs font-bold">A</button>
+              <button data-key="S" class="p-key key-char h-8 rounded text-xs font-bold">S</button>
+              <button data-key="D" class="p-key key-char h-8 rounded text-xs font-bold">D</button>
+              <button data-key="F" class="p-key key-char h-8 rounded text-xs font-bold">F</button>
+              <button data-key="G" class="p-key key-char h-8 rounded text-xs font-bold">G</button>
+              <button data-key="H" class="p-key key-char h-8 rounded text-xs font-bold">H</button>
+              <button data-key="J" class="p-key key-char h-8 rounded text-xs font-bold">J</button>
+              <button data-key="K" class="p-key key-char h-8 rounded text-xs font-bold">K</button>
+              <button data-key="L" class="p-key key-char h-8 rounded text-xs font-bold">L</button>
+              <button data-key=";" class="p-key key-char h-8 rounded text-xs font-bold text-amber-200">;</button>
+            </div>
+
+            <!-- Row 4: Z X C V B N M , . / -->
+            <div class="grid grid-cols-10 gap-1">
+              <button data-key="Z" class="p-key key-char h-8 rounded text-xs font-bold">Z</button>
+              <button data-key="X" class="p-key key-char h-8 rounded text-xs font-bold">X</button>
+              <button data-key="C" class="p-key key-char h-8 rounded text-xs font-bold">C</button>
+              <button data-key="V" class="p-key key-char h-8 rounded text-xs font-bold">V</button>
+              <button data-key="B" class="p-key key-char h-8 rounded text-xs font-bold">B</button>
+              <button data-key="N" class="p-key key-char h-8 rounded text-xs font-bold">N</button>
+              <button data-key="M" class="p-key key-char h-8 rounded text-xs font-bold">M</button>
+              <button data-key="," class="p-key key-char h-8 rounded text-xs font-bold">,</button>
+              <button data-key="." class="p-key key-char h-8 rounded text-xs font-bold">.</button>
+              <button data-key="/" class="p-key key-char h-8 rounded text-xs font-bold">/</button>
+            </div>
+
+            <!-- Row 5: SHIFT, CAPS, SPACE, TAB, :, ", INS, BS -->
+            <div class="grid grid-cols-10 gap-1 items-center">
+              <button id="keyShift" class="p-key key-accent h-8 rounded text-[11px] font-bold">SHIFT</button>
+              <button id="keyCaps" class="p-key key-fn h-8 rounded text-[10px] font-bold">CAPS</button>
+              <button data-key=" " class="col-span-4 p-key key-char h-8 rounded text-xs font-bold text-slate-400">SPACE</button>
+              <button data-key=":" class="p-key key-char h-8 rounded text-xs font-bold text-amber-200">:</button>
+              <button data-key='"' class="p-key key-char h-8 rounded text-xs font-bold text-amber-200">"</button>
+              <button id="keyIns" class="p-key key-fn h-8 rounded text-[10px] font-bold text-cyan-200">INS</button>
+              <button id="keyBs" class="p-key key-break h-8 rounded text-[10px] font-bold">BS</button>
+            </div>
+
+          </div>
+
+          <!-- RIGHT 4 COLS: NUMERIC KEYPAD, OPERATORS & D-PAD -->
+          <div class="lg:col-span-4 flex flex-col gap-1.5 bg-[#1f2329] p-2 rounded-xl border border-slate-700/60">
+            
+            <!-- Scientific Secondary row (sin, cos, tan, sqrt, pow) -->
+            <div class="grid grid-cols-5 gap-1">
+              <button data-sci="sin" class="p-key key-fn h-7 rounded text-[10px] font-bold">sin</button>
+              <button data-sci="cos" class="p-key key-fn h-7 rounded text-[10px] font-bold">cos</button>
+              <button data-sci="tan" class="p-key key-fn h-7 rounded text-[10px] font-bold">tan</button>
+              <button data-sci="sqrt" class="p-key key-fn h-7 rounded text-[10px] font-bold">√</button>
+              <button data-sci="pow" class="p-key key-fn h-7 rounded text-[10px] font-bold">^</button>
+            </div>
+
+            <!-- Keypad grid 4x4 -->
+            <div class="grid grid-cols-4 gap-1">
+              <!-- 7 8 9 / -->
+              <button data-num="7" class="p-key key-num h-8 rounded text-sm font-black">7</button>
+              <button data-num="8" class="p-key key-num h-8 rounded text-sm font-black">8</button>
+              <button data-num="9" class="p-key key-num h-8 rounded text-sm font-black">9</button>
+              <button data-op="/" class="p-key key-char h-8 rounded text-sm font-bold text-amber-300">÷</button>
+
+              <!-- 4 5 6 * -->
+              <button data-num="4" class="p-key key-num h-8 rounded text-sm font-black">4</button>
+              <button data-num="5" class="p-key key-num h-8 rounded text-sm font-black">5</button>
+              <button data-num="6" class="p-key key-num h-8 rounded text-sm font-black">6</button>
+              <button data-op="*" class="p-key key-char h-8 rounded text-sm font-bold text-amber-300">×</button>
+
+              <!-- 1 2 3 - -->
+              <button data-num="1" class="p-key key-num h-8 rounded text-sm font-black">1</button>
+              <button data-num="2" class="p-key key-num h-8 rounded text-sm font-black">2</button>
+              <button data-num="3" class="p-key key-num h-8 rounded text-sm font-black">3</button>
+              <button data-op="-" class="p-key key-char h-8 rounded text-sm font-bold text-amber-300">−</button>
+
+              <!-- 0 . + ENTER -->
+              <button data-num="0" class="p-key key-num h-8 rounded text-sm font-black">0</button>
+              <button data-key="." class="p-key key-num h-8 rounded text-sm font-black">.</button>
+              <button data-op="+" class="p-key key-char h-8 rounded text-sm font-bold text-amber-300">+</button>
+              <button id="keyEnter" class="p-key key-enter h-8 rounded text-xs font-bold tracking-wider">RET</button>
+            </div>
+
+            <!-- Directional Cursor Cluster -->
+            <div class="grid grid-cols-4 gap-1 items-center pt-0.5">
+              <button id="keyCurLeft" class="p-key key-char h-7 rounded text-xs font-bold">◀</button>
+              <button id="keyCurUp" class="p-key key-char h-7 rounded text-xs font-bold">▲</button>
+              <button id="keyCurDown" class="p-key key-char h-7 rounded text-xs font-bold">▼</button>
+              <button id="keyCurRight" class="p-key key-char h-7 rounded text-xs font-bold">▶</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Pocket Computer Base Rubber Feet & Edge Decor -->
+      <div class="flex justify-between items-center px-4 pt-2 text-[10px] text-slate-500 font-mono">
+        <span>CASIO COMPUTER CO., LTD. &bull; TOKYO, JAPAN</span>
+        <span class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>SYSTEM READY &bull; 80L188 BUS 8MHz</span>
+        </span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL: PROGRAM EXAMPLES & CASIO POKEKON BENCHMARKS -->
+  <div id="presetModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <div class="p-3 sm:p-4 border-b border-slate-800 flex items-center justify-between bg-slate-800/40">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">💾</span>
+          <h2 class="text-sm sm:text-base font-bold text-amber-400">CASIO Z-1GR Preset Program Library</h2>
+        </div>
+        <button id="closePresetBtn" class="text-slate-400 hover:text-white px-2 py-1 text-base leading-none rounded">✕</button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+        
+        <!-- Category: BASIC Graphic Games & Demos -->
+        <div>
+          <h3 class="text-xs font-mono font-bold uppercase text-amber-300 tracking-wider mb-2">🕹️ BASIC Graphics &amp; Pocket Computer Games</h3>
+          <div class="space-y-2">
+            
+            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div>
+                <span class="font-bold text-slate-100">1. Lunar Lander 192×32 Pixel Game (BASIC)</span>
+                <p class="text-xs text-slate-400 font-sans mt-0.5">Control thrusters to guide the Apollo lander onto the rocky moon surface without crashing.</p>
+                <code class="text-[11px] text-cyan-300 font-mono block mt-1">Uses PSET, LINE, LOCATE and INKEY$ loop</code>
+              </div>
+              <button onclick="window.z1grApp.loadExample('basic_lunar')" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-xs shrink-0">
+                Load &amp; RUN
+              </button>
+            </div>
+
+            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div>
+                <span class="font-bold text-slate-100">2. Sine Wave &amp; Lissajous Graphics Visualizer (BASIC)</span>
+                <p class="text-xs text-slate-400 font-sans mt-0.5">Plots mathematical waveforms across the full 192×32 graphic LCD.</p>
+                <code class="text-[11px] text-cyan-300 font-mono block mt-1">PSET(X, 16+14*SIN(X/10)) in real-time</code>
+              </div>
+              <button onclick="window.z1grApp.loadExample('basic_sine')" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-xs shrink-0">
+                Load &amp; RUN
+              </button>
+            </div>
+
+            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div>
+                <span class="font-bold text-slate-100">3. Prime Sieve Benchmark (16-Bit Pocket Computer Test)</span>
+                <p class="text-xs text-slate-400 font-sans mt-0.5">Calculates prime numbers up to 500 using the vintage Pokekon array algorithm.</p>
+              </div>
+              <button onclick="window.z1grApp.loadExample('basic_prime')" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-xs shrink-0">
+                Load &amp; RUN
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Category: C Language Programs -->
+        <div>
+          <h3 class="text-xs font-mono font-bold uppercase text-blue-400 tracking-wider mb-2">⚡ C Programming Language (Z-1GR 16-Bit C Interpreter)</h3>
+          <div class="space-y-2">
+            
+            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div>
+                <span class="font-bold text-slate-100">1. Graphic Bouncing Ball in C (Physics &amp; Collision)</span>
+                <p class="text-xs text-slate-400 font-sans mt-0.5">Calculates trajectory with velocity vector and renders on the 192×32 screen.</p>
+                <code class="text-[11px] text-blue-300 font-mono block mt-1">pset(), line(), printf(), while(1)</code>
+              </div>
+              <button onclick="window.z1grApp.loadExample('c_ball')" class="px-3 py-1.5 bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold rounded text-xs shrink-0">
+                Load C &amp; RUN
+              </button>
+            </div>
+
+            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div>
+                <span class="font-bold text-slate-100">2. Quadratic &amp; Scientific Equation Solver (C Language)</span>
+                <p class="text-xs text-slate-400 font-sans mt-0.5">Prompts for A, B, C coefficients, calculates discriminant and roots with formatted printf().</p>
+              </div>
+              <button onclick="window.z1grApp.loadExample('c_quad')" class="px-3 py-1.5 bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold rounded text-xs shrink-0">
+                Load C &amp; RUN
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="p-3 border-t border-slate-800 bg-slate-950 flex justify-end">
+        <button id="closePresetBtn2" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: MANUAL & USER GUIDE -->
+  <div id="manualModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <div class="p-3 sm:p-4 border-b border-slate-800 flex items-center justify-between bg-slate-800/40">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📖</span>
+          <h2 class="text-sm sm:text-base font-bold text-amber-400">CASIO Z-1GR Pocket Computer Reference</h2>
+        </div>
+        <button id="closeManualBtn" class="text-slate-400 hover:text-white px-2 py-1 text-base leading-none rounded">✕</button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+        
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700">
+          <h3 class="text-xs font-mono font-bold text-amber-300 uppercase mb-1">1. System Modes</h3>
+          <ul class="list-disc list-inside space-y-1 text-xs">
+            <li><strong class="text-white">MENU:</strong> Returns to system selector: [1] CALC, [2] BASIC, [3] C, [4] CASL, [5] SYSTEM.</li>
+            <li><strong class="text-white">CALC:</strong> Immediate scientific calculator mode with direct formula evaluation.</li>
+            <li><strong class="text-white">BASIC:</strong> Casio Pokekon BASIC interpreter with full 192×32 graphics engine.</li>
+            <li><strong class="text-white">C-MODE:</strong> The C interpreter modeled on the famous Casio 16-bit C system.</li>
+            <li><strong class="text-white">CASL:</strong> COMET/CASL machine assembler simulator mode.</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700">
+          <h3 class="text-xs font-mono font-bold text-amber-300 uppercase mb-1">2. Built-in Commands (BASIC &amp; System)</h3>
+          <p class="text-xs text-slate-400 mb-2">Type these directly into BASIC mode and press RET:</p>
+          <div class="grid grid-cols-2 gap-2 font-mono text-xs">
+            <div class="bg-slate-900 p-2 rounded">
+              <span class="text-amber-400 font-bold">RUN</span> - Execute loaded program
+            </div>
+            <div class="bg-slate-900 p-2 rounded">
+              <span class="text-amber-400 font-bold">LIST</span> - Display program lines
+            </div>
+            <div class="bg-slate-900 p-2 rounded">
+              <span class="text-amber-400 font-bold">NEW</span> - Clear current program
+            </div>
+            <div class="bg-slate-900 p-2 rounded">
+              <span class="text-amber-400 font-bold">CLS</span> - Clear LCD screen
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700">
+          <h3 class="text-xs font-mono font-bold text-amber-300 uppercase mb-1">3. Graphics Primitives (192 × 32 Pixels)</h3>
+          <ul class="list-disc list-inside space-y-1 font-mono text-xs text-slate-300">
+            <li><code>PSET(x, y)</code> - Turns pixel on (x: 0-191, y: 0-31)</li>
+            <li><code>PRESET(x, y)</code> - Clears pixel</li>
+            <li><code>LINE(x1, y1)-(x2, y2)</code> - Draws line vector</li>
+            <li><code>CIRCLE(x, y, r)</code> - Draws circle with radius r</li>
+            <li><code>LOCATE col, row</code> - Sets cursor position (col: 0-31, row: 0-3)</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="p-3 border-t border-slate-800 bg-slate-950 flex justify-end">
+        <button id="closeManualBtn2" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg">
+          Back to Z-1GR
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="w-full text-center py-2 text-[11px] text-slate-500 font-mono">
+    CASIO Z-1GR &bull; 16-Bit Intel 80L188EB Compatible Microprocessor &bull; Virtual Pokekon Terminal
+  </footer>
+
+  <script>
+    class Z1GRSound {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx && typeof AudioContext !== 'undefined') {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+      click() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(3200, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.008);
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.008);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.009);
+        } catch(e) {}
+      }
+      beep(freq = 1800, duration = 0.06) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+      errorTone() {
+        this.beep(280, 0.22);
+      }
+    }
+
+    const sound = new Z1GRSound();
+
+    /* High performance 192x32 pixel physical LCD rendering on Canvas */
+    class LcdDisplay {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        
+        // Native Z-1GR resolution: 192 dots wide x 32 dots high
+        this.width = 192;
+        this.height = 32;
+        
+        // 4 lines of 32 characters (each char is 5x7 in 6x8 cell)
+        this.cols = 32;
+        this.rows = 4;
+        
+        // Pixel buffer (192 x 32 array of 0 or 1)
+        this.pixels = new Uint8Array(this.width * this.height);
+        
+        // Text screen buffer (4 lines of 32 chars)
+        this.textLines = [
+          '*** CASIO Z-1GR 16-BIT POKEKON ***',
+          '  [1]CAL  [2]BASIC  [3]C  [4]CASL ',
+          'SELECT MODE NUMBER (1-4) ?       ',
+          'READY                            '
+        ];
+        
+        this.cursorX = 0;
+        this.cursorY = 2;
+        this.cursorBlink = true;
+        this.contrast = 0.85;
+
+        // Start cursor blink interval
+        setInterval(() => {
+          this.cursorBlink = !this.cursorBlink;
+          this.render();
+        }, 500);
+
+        this.initFont();
+        this.render();
+      }
+
+      setContrast(val) {
+        this.contrast = Math.max(0.3, Math.min(1.0, val));
+        this.render();
+      }
+
+      cls() {
+        this.pixels.fill(0);
+        this.textLines = ['', '', '', ''];
+        this.cursorX = 0;
+        this.cursorY = 0;
+        this.render();
+      }
+
+      setPixel(x, y, state = 1) {
+        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+          this.pixels[y * this.width + x] = state ? 1 : 0;
+        }
+      }
+
+      drawLine(x0, y0, x1, y1, state = 1) {
+        x0 = Math.round(x0); y0 = Math.round(y0);
+        x1 = Math.round(x1); y1 = Math.round(y1);
+        const dx = Math.abs(x1 - x0);
+        const dy = Math.abs(y1 - y0);
+        const sx = (x0 < x1) ? 1 : -1;
+        const sy = (y0 < y1) ? 1 : -1;
+        let err = dx - dy;
+
+        while (true) {
+          this.setPixel(x0, y0, state);
+          if (x0 === x1 && y0 === y1) break;
+          const e2 = 2 * err;
+          if (e2 > -dy) { err -= dy; x0 += sx; }
+          if (e2 < dx) { err += dx; y0 += sy; }
+        }
+      }
+
+      drawCircle(xm, ym, r, state = 1) {
+        xm = Math.round(xm); ym = Math.round(ym); r = Math.round(r);
+        let x = -r, y = 0, err = 2 - 2 * r;
+        do {
+          this.setPixel(xm - x, ym + y, state);
+          this.setPixel(xm - y, ym - x, state);
+          this.setPixel(xm + x, ym - y, state);
+          this.setPixel(xm + y, ym + x, state);
+          r = err;
+          if (r <= y) err += ++y * 2 + 1;
+          if (r > x || err > y) err += ++x * 2 + 1;
+        } while (x < 0);
+      }
+
+      // Font bitmap: Standard 5x7 dot-matrix characters
+      initFont() {
+        this.font = {};
+        // Simple 5x7 bitmap generator for ASCII characters
+        const glyphs = {
+          ' ': [0,0,0,0,0],
+          '!': [0,0,0x5F,0,0],
+          '"': [0,0x07,0,0x07,0],
+          '#': [0x14,0x7F,0x14,0x7F,0x14],
+          '$': [0x24,0x2A,0x7F,0x2A,0x12],
+          '%': [0x23,0x13,0x08,0x64,0x62],
+          '&': [0x36,0x49,0x55,0x22,0x50],
+          "'": [0,0x05,0x03,0,0],
+          '(': [0,0x1C,0x22,0x41,0],
+          ')': [0,0x41,0x22,0x1C,0],
+          '*': [0x14,0x08,0x3E,0x08,0x14],
+          '+': [0x08,0x08,0x3E,0x08,0x08],
+          ',': [0,0x50,0x30,0,0],
+          '-': [0x08,0x08,0x08,0x08,0x08],
+          '.': [0,0x60,0x60,0,0],
+          '/': [0x20,0x10,0x08,0x04,0x02],
+          '0': [0x3E,0x51,0x49,0x45,0x3E],
+          '1': [0,0x42,0x7F,0x40,0],
+          '2': [0x42,0x61,0x51,0x49,0x46],
+          '3': [0x21,0x41,0x45,0x4B,0x31],
+          '4': [0x18,0x14,0x12,0x7F,0x10],
+          '5': [0x27,0x45,0x45,0x45,0x39],
+          '6': [0x3C,0x4A,0x49,0x49,0x30],
+          '7': [0x01,0x71,0x09,0x05,0x03],
+          '8': [0x36,0x49,0x49,0x49,0x36],
+          '9': [0x06,0x49,0x49,0x29,0x1E],
+          ':': [0,0x36,0x36,0,0],
+          ';': [0,0x56,0x36,0,0],
+          '<': [0x08,0x14,0x22,0x41,0x80],
+          '=': [0x14,0x14,0x14,0x14,0x14],
+          '>': [0x80,0x41,0x22,0x14,0x08],
+          '?': [0x02,0x01,0x51,0x09,0x06],
+          '@': [0x32,0x49,0x79,0x41,0x3E],
+          '[': [0,0x7F,0x41,0x41,0],
+          ']': [0,0x41,0x41,0x7F,0],
+          '^': [0x04,0x02,0x01,0x02,0x04],
+          '_': [0x40,0x40,0x40,0x40,0x40],
+          '`': [0,0x01,0x02,0,0],
+          '{': [0,0x08,0x36,0x41,0],
+          '}': [0,0x41,0x36,0x08,0],
+          '~': [0x08,0x04,0x08,0x10,0x08]
+        };
+
+        // Populate alphabet A-Z
+        const letters = {
+          'A': [0x7E,0x11,0x11,0x11,0x7E],
+          'B': [0x7F,0x49,0x49,0x49,0x36],
+          'C': [0x3E,0x41,0x41,0x41,0x22],
+          'D': [0x7F,0x41,0x41,0x22,0x1C],
+          'E': [0x7F,0x49,0x49,0x49,0x41],
+          'F': [0x7F,0x09,0x09,0x09,0x01],
+          'G': [0x3E,0x41,0x49,0x49,0x7A],
+          'H': [0x7F,0x08,0x08,0x08,0x7F],
+          'I': [0,0x41,0x7F,0x41,0],
+          'J': [0x20,0x40,0x41,0x3F,0x01],
+          'K': [0x7F,0x08,0x14,0x22,0x41],
+          'L': [0x7F,0x40,0x40,0x40,0x40],
+          'M': [0x7F,0x02,0x0C,0x02,0x7F],
+          'N': [0x7F,0x04,0x08,0x10,0x7F],
+          'O': [0x3E,0x41,0x41,0x41,0x3E],
+          'P': [0x7F,0x09,0x09,0x09,0x06],
+          'Q': [0x3E,0x41,0x51,0x21,0x5E],
+          'R': [0x7F,0x09,0x19,0x29,0x46],
+          'S': [0x46,0x49,0x49,0x49,0x31],
+          'T': [0x01,0x01,0x7F,0x01,0x01],
+          'U': [0x3F,0x40,0x40,0x40,0x3F],
+          'V': [0x1F,0x20,0x40,0x20,0x1F],
+          'W': [0x7F,0x20,0x18,0x20,0x7F],
+          'X': [0x63,0x14,0x08,0x14,0x63],
+          'Y': [0x07,0x08,0x70,0x08,0x07],
+          'Z': [0x61,0x51,0x49,0x45,0x43]
+        };
+
+        for (let k in glyphs) this.font[k] = glyphs[k];
+        for (let k in letters) {
+          this.font[k] = letters[k];
+          // map lowercase to uppercase bitmap for classic retro casio look
+          this.font[k.toLowerCase()] = letters[k];
+        }
+      }
+
+      printAt(row, text) {
+        if (row >= 0 && row < this.rows) {
+          this.textLines[row] = (text || '').padEnd(this.cols, ' ').substring(0, this.cols);
+          this.render();
+        }
+      }
+
+      scrollUp() {
+        this.textLines.shift();
+        this.textLines.push(''.padEnd(this.cols, ' '));
+        this.cursorY = Math.max(0, this.cursorY - 1);
+        this.render();
+      }
+
+      render() {
+        const cw = this.canvas.width;
+        const ch = this.canvas.height;
+        const scale = cw / this.width; // 3x scale factor
+
+        // Background LCD color
+        this.ctx.fillStyle = '#8ba287';
+        this.ctx.fillRect(0, 0, cw, ch);
+
+        // 1. Draw inactive ghost matrix dots
+        this.ctx.fillStyle = 'rgba(125, 148, 122, 0.45)';
+        for (let y = 0; y < this.height; y++) {
+          for (let x = 0; x < this.width; x++) {
+            this.ctx.fillRect(x * scale, y * scale, scale - 0.5, scale - 0.5);
+          }
+        }
+
+        // 2. Draw text buffer into virtual pixel matrix
+        const tempPixels = new Uint8Array(this.pixels);
+
+        for (let r = 0; r < this.rows; r++) {
+          const line = this.textLines[r] || '';
+          const yOffset = r * 8; // 8 pixels per row (7 text + 1 line space)
+
+          for (let c = 0; c < this.cols; c++) {
+            const char = line[c] || ' ';
+            const xOffset = c * 6; // 6 pixels per col (5 text + 1 space)
+            const glyph = this.font[char] || this.font['?'] || [0,0,0,0,0];
+
+            for (let gx = 0; gx < 5; gx++) {
+              const colBits = glyph[gx] || 0;
+              for (let gy = 0; gy < 7; gy++) {
+                if ((colBits >> gy) & 1) {
+                  const px = xOffset + gx;
+                  const py = yOffset + gy;
+                  if (px < this.width && py < this.height) {
+                    tempPixels[py * this.width + px] = 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // 3. Draw blinking cursor
+        if (this.cursorBlink && this.cursorY >= 0 && this.cursorY < this.rows && this.cursorX >= 0 && this.cursorX < this.cols) {
+          const cxOffset = this.cursorX * 6;
+          const cyOffset = this.cursorY * 8 + 7; // underline cursor
+          for (let cx = 0; cx < 5; cx++) {
+            const px = cxOffset + cx;
+            const py = cyOffset;
+            if (px < this.width && py < this.height) {
+              tempPixels[py * this.width + px] = 1;
+            }
+          }
+        }
+
+        // 4. Paint all active pixels with contrast weighting
+        const darkAlpha = Math.max(0.4, this.contrast);
+        this.ctx.fillStyle = `rgba(18, 28, 18, ${darkAlpha})`;
+
+        for (let y = 0; y < this.height; y++) {
+          for (let x = 0; x < this.width; x++) {
+            if (tempPixels[y * this.width + x] === 1) {
+              this.ctx.fillRect(x * scale, y * scale, scale - 0.4, scale - 0.4);
+            }
+          }
+        }
+      }
+    }
+
+    class Z1GRSystem {
+      constructor() {
+        this.lcd = new LcdDisplay('lcdCanvas');
+        
+        // System state: 'MENU', 'CALC', 'BASIC', 'C', 'CASL', 'SYSTEM'
+        this.mode = 'MENU';
+        this.angleMode = 'DEG'; // 'DEG', 'RAD', 'GRA'
+        this.isShift = false;
+        this.isCaps = true;
+        this.isBusy = false;
+        
+        // Input command buffer
+        this.cmdBuffer = '';
+        this.cursorIndex = 0;
+
+        // RAM Storage: Programs in memory
+        this.basicProgram = [];
+        this.cProgram = '';
+        this.calcVariables = {};
+        for (let i = 65; i <= 90; i++) this.calcVariables[String.fromCharCode(i)] = 0;
+        this.calcLastAns = 0;
+
+        // Waiting for interactive INPUT
+        this.waitingInputVar = null;
+        this.inputPrompt = '';
+
+        this.initDOM();
+        this.bindEvents();
+        this.showMenu();
+      }
+
+      initDOM() {
+        this.annMenu = document.getElementById('annMenu');
+        this.annBasic = document.getElementById('annBasic');
+        this.annC = document.getElementById('annC');
+        this.annCalc = document.getElementById('annCalc');
+        this.annCasl = document.getElementById('annCasl');
+        this.annShift = document.getElementById('annShift');
+        this.annCaps = document.getElementById('annCaps');
+        this.annDeg = document.getElementById('annDeg');
+        this.annRad = document.getElementById('annRad');
+        this.annGra = document.getElementById('annGra');
+        this.annBusy = document.getElementById('annBusy');
+        this.lcdBottomLeft = document.getElementById('lcdBottomLeft');
+        this.contrastSlider = document.getElementById('contrastSlider');
+
+        this.contrastSlider.addEventListener('input', (e) => {
+          this.lcd.setContrast(e.target.value / 100);
+        });
+      }
+
+      updateAnnunciators() {
+        const off = 'opacity-20';
+        const on = 'opacity-100 font-bold';
+
+        this.annMenu.className = (this.mode === 'MENU') ? 'px-1 rounded bg-[#1e2a1d] text-[#8ca388]' : off;
+        this.annBasic.className = (this.mode === 'BASIC') ? on : off;
+        this.annC.className = (this.mode === 'C') ? on : off;
+        this.annCalc.className = (this.mode === 'CALC') ? on : off;
+        this.annCasl.className = (this.mode === 'CASL') ? on : off;
+        
+        this.annShift.className = this.isShift ? 'opacity-100 bg-amber-900 text-amber-200 px-1 rounded' : off;
+        this.annCaps.className = this.isCaps ? 'opacity-100 bg-slate-900 text-slate-200 px-1 rounded' : off;
+
+        this.annDeg.className = (this.angleMode === 'DEG') ? on : off;
+        this.annRad.className = (this.angleMode === 'RAD') ? on : off;
+        this.annGra.className = (this.angleMode === 'GRA') ? on : off;
+        this.annBusy.className = this.isBusy ? 'opacity-100 text-red-900 font-black animate-pulse' : off;
+      }
+
+      showMenu() {
+        this.mode = 'MENU';
+        this.cmdBuffer = '';
+        this.updateAnnunciators();
+        this.lcd.cls();
+        this.lcd.printAt(0, '*** CASIO Z-1GR 16-BIT POKEKON ***');
+        this.lcd.printAt(1, '  [1]CAL  [2]BASIC  [3]C  [4]CASL ');
+        this.lcd.printAt(2, 'SELECT MODE (1-4) ?              ');
+        this.lcd.printAt(3, 'READY                            ');
+        this.lcd.cursorX = 20;
+        this.lcd.cursorY = 2;
+        this.lcdBottomLeft.textContent = 'MENU SELECT: 1=CALC, 2=BASIC, 3=C, 4=CASL';
+      }
+
+      switchMode(newMode) {
+        sound.click();
+        this.mode = newMode;
+        this.cmdBuffer = '';
+        this.cursorIndex = 0;
+        this.updateAnnunciators();
+        this.lcd.cls();
+
+        if (newMode === 'CALC') {
+          this.lcd.printAt(0, 'CASIO Z-1GR SCIENTIFIC CALC');
+          this.lcd.printAt(1, 'DEG MODE - FORMULA READY');
+          this.lcd.printAt(2, 'ANS= 0');
+          this.lcd.printAt(3, 'CAL> ');
+          this.lcd.cursorX = 5;
+          this.lcd.cursorY = 3;
+          this.lcdBottomLeft.textContent = 'CALCULATOR MODE (sin, cos, log, ^, Ans, A-Z)';
+        } else if (newMode === 'BASIC') {
+          this.lcd.printAt(0, 'CASIO 16-BIT BASIC V3.0');
+          this.lcd.printAt(1, '26,604 BYTES FREE');
+          this.lcd.printAt(2, 'READY');
+          this.lcd.printAt(3, '> ');
+          this.lcd.cursorX = 2;
+          this.lcd.cursorY = 3;
+          this.lcdBottomLeft.textContent = 'CASIO BASIC MODE (RUN, LIST, NEW, PSET, LINE)';
+        } else if (newMode === 'C') {
+          this.lcd.printAt(0, 'CASIO C-INTERPRETER 80188');
+          this.lcd.printAt(1, '#include <stdio.h>');
+          this.lcd.printAt(2, 'READY FOR C SCRIPTS');
+          this.lcd.printAt(3, 'C> ');
+          this.lcd.cursorX = 3;
+          this.lcd.cursorY = 3;
+          this.lcdBottomLeft.textContent = 'C COMPILER MODE (printf, loops, graphics)';
+        } else if (newMode === 'CASL') {
+          this.lcd.printAt(0, 'CASL / 8086 ASSEMBLER');
+          this.lcd.printAt(1, 'COMET II REGISTER READY');
+          this.lcd.printAt(2, 'GR0=0000 GR1=0000 GR2=0000');
+          this.lcd.printAt(3, 'ASM> ');
+          this.lcd.cursorX = 5;
+          this.lcd.cursorY = 3;
+          this.lcdBottomLeft.textContent = 'CASL 8086 ASSEMBLER MODE';
+        }
+      }
+
+      handleKeyChar(char) {
+        sound.click();
+        let c = char;
+        if (this.isShift) {
+          // secondary symbol mapping
+          const shiftMap = { '1':'!', '2':'"', '3':'#', '4':'$', '5':'%', '6':'&', '7':"'", '8':'(', '9':')', '0':'=' };
+          if (shiftMap[c]) c = shiftMap[c];
+          this.isShift = false;
+          this.updateAnnunciators();
+        } else if (!this.isCaps && c >= 'A' && c <= 'Z') {
+          c = c.toLowerCase();
+        }
+
+        // Menu selection shortcuts
+        if (this.mode === 'MENU') {
+          if (c === '1') return this.switchMode('CALC');
+          if (c === '2') return this.switchMode('BASIC');
+          if (c === '3') return this.switchMode('C');
+          if (c === '4') return this.switchMode('CASL');
+        }
+
+        this.cmdBuffer += c;
+        this.refreshPromptLine();
+      }
+
+      handleBackspace() {
+        sound.click();
+        if (this.cmdBuffer.length > 0) {
+          this.cmdBuffer = this.cmdBuffer.slice(0, -1);
+          this.refreshPromptLine();
+        }
+      }
+
+      refreshPromptLine() {
+        const prefix = (this.mode === 'CALC') ? 'CAL> ' :
+                       (this.mode === 'C') ? 'C> ' :
+                       (this.mode === 'CASL') ? 'ASM> ' : '> ';
+
+        const fullLine = prefix + this.cmdBuffer;
+        this.lcd.printAt(3, fullLine);
+        this.lcd.cursorX = Math.min(31, fullLine.length);
+        this.lcd.cursorY = 3;
+      }
+
+      handleReturn() {
+        sound.click();
+        const input = this.cmdBuffer.trim();
+        this.cmdBuffer = '';
+
+        // If waiting for interactive INPUT in BASIC
+        if (this.waitingInputVar) {
+          const varName = this.waitingInputVar;
+          this.calcVariables[varName] = parseFloat(input) || 0;
+          this.waitingInputVar = null;
+          this.resumeBasicExecution();
+          return;
+        }
+
+        if (!input) {
+          this.refreshPromptLine();
+          return;
+        }
+
+        if (this.mode === 'CALC') {
+          this.executeCalc(input);
+        } else if (this.mode === 'BASIC') {
+          this.executeBasicCommand(input);
+        } else if (this.mode === 'C') {
+          this.executeCLine(input);
+        } else if (this.mode === 'CASL') {
+          this.lcd.printAt(2, `OP: ${input.toUpperCase()} OK`);
+          this.refreshPromptLine();
+        }
+      }
+
+      executeCalc(expr) {
+        try {
+          let s = expr;
+          s = s.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').replace(/\^/g, '**');
+          s = s.replace(/π/g, `(${Math.PI})`);
+          s = s.replace(/\bAns\b/g, `(${this.calcLastAns})`);
+
+          // Variables A-Z
+          for (let i = 65; i <= 90; i++) {
+            const v = String.fromCharCode(i);
+            const reg = new RegExp(`\\b${v}\\b`, 'g');
+            s = s.replace(reg, `(${this.calcVariables[v] || 0})`);
+          }
+
+          // Trigonometry
+          const toRad = (a) => (this.angleMode === 'DEG' ? (a * Math.PI)/180 : (this.angleMode === 'GRA' ? (a * Math.PI)/200 : a));
+          s = s.replace(/\bsin\(([^)]+)\)/g, (m, p) => `Math.sin(${toRad(eval(p))})`);
+          s = s.replace(/\bcos\(([^)]+)\)/g, (m, p) => `Math.cos(${toRad(eval(p))})`);
+          s = s.replace(/\btan\(([^)]+)\)/g, (m, p) => `Math.tan(${toRad(eval(p))})`);
+          s = s.replace(/√\(([^)]+)\)/g, 'Math.sqrt($1)');
+          s = s.replace(/\blog\(([^)]+)\)/g, 'Math.log10($1)');
+          s = s.replace(/\bln\(([^)]+)\)/g, 'Math.log($1)');
+
+          const result = eval(s);
+          if (typeof result === 'number' && !isNaN(result)) {
+            this.calcLastAns = result;
+            this.lcd.printAt(1, expr + ' =');
+            this.lcd.printAt(2, 'ANS= ' + result);
+          } else {
+            this.lcd.printAt(2, 'Math ERROR');
+            sound.errorTone();
+          }
+        } catch(e) {
+          this.lcd.printAt(2, 'Syntax ERROR');
+          sound.errorTone();
+        }
+        this.refreshPromptLine();
+      }
+
+      executeBasicCommand(cmd) {
+        // Check for line number: e.g. "10 PRINT A"
+        const lineMatch = cmd.match(/^(\d+)\s*(.*)$/);
+        if (lineMatch) {
+          const lineNum = parseInt(lineMatch[1]);
+          const code = lineMatch[2].trim();
+          
+          // Remove existing line if present
+          this.basicProgram = this.basicProgram.filter(item => item.num !== lineNum);
+          if (code) {
+            this.basicProgram.push({ num: lineNum, code: code });
+            this.basicProgram.sort((a, b) => a.num - b.num);
+          }
+          this.refreshPromptLine();
+          return;
+        }
+
+        const upper = cmd.toUpperCase();
+
+        if (upper === 'RUN') {
+          this.runBasic();
+        } else if (upper === 'LIST') {
+          this.lcd.cls();
+          const lines = this.basicProgram.slice(0, 4);
+          lines.forEach((l, idx) => {
+            this.lcd.printAt(idx, `${l.num} ${l.code}`);
+          });
+          if (lines.length === 0) {
+            this.lcd.printAt(0, 'NO PROGRAM IN MEMORY');
+          }
+        } else if (upper === 'NEW') {
+          this.basicProgram = [];
+          this.lcd.printAt(2, 'CLEARED: 26,604 BYTES FREE');
+          this.refreshPromptLine();
+        } else if (upper === 'CLS') {
+          this.lcd.cls();
+          this.refreshPromptLine();
+        } else {
+          // Immediate command execution
+          this.interpretBasicStatement(cmd);
+          this.refreshPromptLine();
+        }
+      }
+
+      runBasic() {
+        if (this.basicProgram.length === 0) {
+          this.lcd.printAt(2, 'NO PROGRAM');
+          sound.errorTone();
+          this.refreshPromptLine();
+          return;
+        }
+
+        this.isBusy = true;
+        this.updateAnnunciators();
+        this.basicPC = 0; // program statement pointer
+        this.basicLabels = {};
+        
+        // Map line numbers
+        this.basicProgram.forEach((item, idx) => {
+          this.basicLabels[item.num] = idx;
+        });
+
+        this.stepBasic();
+      }
+
+      stepBasic() {
+        if (!this.isBusy) return;
+
+        if (this.basicPC >= this.basicProgram.length) {
+          this.isBusy = false;
+          this.updateAnnunciators();
+          this.lcd.printAt(3, 'READY');
+          sound.beep(1200, 0.08);
+          return;
+        }
+
+        const currentLine = this.basicProgram[this.basicPC];
+        const code = currentLine.code;
+        
+        const jump = this.interpretBasicStatement(code);
+
+        if (this.waitingInputVar) {
+          // Pause execution until user types RET
+          return;
+        }
+
+        if (typeof jump === 'number') {
+          if (this.basicLabels[jump] !== undefined) {
+            this.basicPC = this.basicLabels[jump];
+          } else {
+            this.isBusy = false;
+            this.updateAnnunciators();
+            this.lcd.printAt(2, 'Line Not Found: ' + jump);
+            sound.errorTone();
+            return;
+          }
+        } else {
+          this.basicPC++;
+        }
+
+        // Slight micro-cadence delay for authentic pocket computer timing
+        setTimeout(() => this.stepBasic(), 15);
+      }
+
+      resumeBasicExecution() {
+        this.basicPC++;
+        this.stepBasic();
+      }
+
+      interpretBasicStatement(stmt) {
+        let s = stmt.trim();
+        const upper = s.toUpperCase();
+
+        // 1. CLS
+        if (upper === 'CLS') {
+          this.lcd.cls();
+          return;
+        }
+
+        // 2. LOCATE col, row
+        const locMatch = upper.match(/^LOCATE\s+(\d+)\s*,\s*(\d+)/);
+        if (locMatch) {
+          this.lcd.cursorX = parseInt(locMatch[1]);
+          this.lcd.cursorY = parseInt(locMatch[2]);
+          return;
+        }
+
+        // 3. PSET(x, y)
+        const psetMatch = upper.match(/^PSET\s*\(\s*([^,]+)\s*,\s*([^)]+)\s*\)/);
+        if (psetMatch) {
+          const x = Math.round(this.evalBasicExpr(psetMatch[1]));
+          const y = Math.round(this.evalBasicExpr(psetMatch[2]));
+          this.lcd.setPixel(x, y, 1);
+          this.lcd.render();
+          return;
+        }
+
+        // 4. LINE(x1, y1)-(x2, y2)
+        const lineMatch = upper.match(/^LINE\s*\(\s*([^,]+)\s*,\s*([^)]+)\s*\)\s*-\s*\(\s*([^,]+)\s*,\s*([^)]+)\s*\)/);
+        if (lineMatch) {
+          const x1 = this.evalBasicExpr(lineMatch[1]);
+          const y1 = this.evalBasicExpr(lineMatch[2]);
+          const x2 = this.evalBasicExpr(lineMatch[3]);
+          const y2 = this.evalBasicExpr(lineMatch[4]);
+          this.lcd.drawLine(x1, y1, x2, y2, 1);
+          this.lcd.render();
+          return;
+        }
+
+        // 5. CIRCLE(x, y, r)
+        const circMatch = upper.match(/^CIRCLE\s*\(\s*([^,]+)\s*,\s*([^)]+)\s*,\s*([^)]+)\s*\)/);
+        if (circMatch) {
+          const x = this.evalBasicExpr(circMatch[1]);
+          const y = this.evalBasicExpr(circMatch[2]);
+          const r = this.evalBasicExpr(circMatch[3]);
+          this.lcd.drawCircle(x, y, r, 1);
+          this.lcd.render();
+          return;
+        }
+
+        // 6. BEEP
+        if (upper.startsWith('BEEP')) {
+          sound.beep(1500, 0.08);
+          return;
+        }
+
+        // 7. PRINT expr
+        if (upper.startsWith('PRINT') || upper.startsWith('?')) {
+          let expr = s.replace(/^(PRINT|\?)\s*/i, '');
+          let val = '';
+          if (expr.startsWith('"') && expr.endsWith('"')) {
+            val = expr.slice(1, -1);
+          } else {
+            val = this.evalBasicExpr(expr);
+          }
+          this.lcd.printAt(this.lcd.cursorY, String(val));
+          this.lcd.cursorY = Math.min(3, this.lcd.cursorY + 1);
+          return;
+        }
+
+        // 8. INPUT "Prompt", Var OR INPUT Var
+        const inMatch = s.match(/^INPUT\s*(?:"([^"]*)",\s*)?([A-Z])/i);
+        if (inMatch) {
+          const prompt = inMatch[1] || '?';
+          const targetVar = inMatch[2].toUpperCase();
+          this.waitingInputVar = targetVar;
+          this.lcd.printAt(3, `${prompt} `);
+          this.lcd.cursorX = prompt.length + 1;
+          this.lcd.cursorY = 3;
+          sound.beep(800, 0.05);
+          return;
+        }
+
+        // 9. GOTO line
+        const gotoMatch = upper.match(/^GOTO\s+(\d+)/);
+        if (gotoMatch) {
+          return parseInt(gotoMatch[1]);
+        }
+
+        // 10. IF cond THEN line
+        const ifMatch = upper.match(/^IF\s+(.+)\s+THEN\s+(\d+)/);
+        if (ifMatch) {
+          const cond = ifMatch[1];
+          const targetLine = parseInt(ifMatch[2]);
+          if (this.evalBasicCondition(cond)) {
+            return targetLine;
+          }
+          return;
+        }
+
+        // 11. LET Var = expr OR Var = expr
+        const assignMatch = s.match(/^(?:LET\s+)?([A-Z])\s*=\s*(.+)$/i);
+        if (assignMatch) {
+          const varName = assignMatch[1].toUpperCase();
+          const val = this.evalBasicExpr(assignMatch[2]);
+          this.calcVariables[varName] = val;
+          return;
+        }
+      }
+
+      evalBasicCondition(cond) {
+        try {
+          let c = cond.replace(/=/g, '==').replace(/<>/g, '!=');
+          for (let i = 65; i <= 90; i++) {
+            const v = String.fromCharCode(i);
+            const reg = new RegExp(`\\b${v}\\b`, 'g');
+            c = c.replace(reg, `(${this.calcVariables[v] || 0})`);
+          }
+          return eval(c);
+        } catch(e) {
+          return false;
+        }
+      }
+
+      evalBasicExpr(expr) {
+        try {
+          let s = expr.trim();
+          s = s.replace(/\^/g, '**');
+          for (let i = 65; i <= 90; i++) {
+            const v = String.fromCharCode(i);
+            const reg = new RegExp(`\\b${v}\\b`, 'g');
+            s = s.replace(reg, `(${this.calcVariables[v] || 0})`);
+          }
+          s = s.replace(/SIN\(/gi, 'Math.sin(');
+          s = s.replace(/COS\(/gi, 'Math.cos(');
+          s = s.replace(/SQR\(/gi, 'Math.sqrt(');
+          return eval(s);
+        } catch(e) {
+          return 0;
+        }
+      }
+
+      executeCLine(line) {
+        if (line.toUpperCase() === 'RUN') {
+          this.runCProgram();
+          return;
+        }
+
+        // Direct C statements
+        try {
+          if (line.includes('printf(')) {
+            const match = line.match(/printf\s*\(\s*"([^"]*)"(?:,\s*(.*))?\)/);
+            if (match) {
+              let text = match[1];
+              let arg = match[2];
+              if (arg) {
+                const val = eval(arg);
+                text = text.replace(/%[dfsg]/, val);
+              }
+              this.lcd.printAt(2, text);
+            }
+          } else {
+            eval(line);
+            this.lcd.printAt(2, 'C EXECUTED: OK');
+          }
+        } catch(e) {
+          this.lcd.printAt(2, 'C Syntax Error');
+          sound.errorTone();
+        }
+        this.refreshPromptLine();
+      }
+
+      runCProgram() {
+        this.isBusy = true;
+        this.updateAnnunciators();
+        this.lcd.cls();
+        this.lcd.printAt(0, 'RUNNING 16-BIT C BINARY...');
+        sound.beep(1600, 0.05);
+
+        setTimeout(() => {
+          try {
+            // Environment for C execution
+            const pset = (x, y) => this.lcd.setPixel(Math.round(x), Math.round(y), 1);
+            const line = (x1, y1, x2, y2) => this.lcd.drawLine(x1, y1, x2, y2, 1);
+            const circle = (x, y, r) => this.lcd.drawCircle(x, y, r, 1);
+            const cls = () => this.lcd.cls();
+            const printf = (str, ...args) => {
+              let out = str;
+              args.forEach(a => { out = out.replace(/%[dfsg]/, a); });
+              this.lcd.printAt(1, out);
+            };
+
+            // Execute the loaded C program script
+            const fn = new Function('pset', 'line', 'circle', 'cls', 'printf', 'Math', this.cProgram);
+            fn(pset, line, circle, cls, printf, Math);
+
+            this.lcd.render();
+            this.lcd.printAt(3, 'C MAIN FINISHED (EXIT 0)');
+          } catch(err) {
+            this.lcd.printAt(2, 'C Runtime Error');
+            sound.errorTone();
+          }
+          this.isBusy = false;
+          this.updateAnnunciators();
+        }, 150);
+      }
+
+      bindEvents() {
+        // Top Function Keys
+        document.getElementById('keyMenu').addEventListener('click', () => this.showMenu());
+        document.getElementById('keyCalc').addEventListener('click', () => this.switchMode('CALC'));
+        document.getElementById('keyBasic').addEventListener('click', () => this.switchMode('BASIC'));
+        document.getElementById('keyC').addEventListener('click', () => this.switchMode('C'));
+        document.getElementById('keyCasl').addEventListener('click', () => this.switchMode('CASL'));
+        document.getElementById('keyCls').addEventListener('click', () => {
+          sound.click();
+          this.lcd.cls();
+          this.refreshPromptLine();
+        });
+        document.getElementById('keyBreak').addEventListener('click', () => {
+          sound.errorTone();
+          this.isBusy = false;
+          this.waitingInputVar = null;
+          this.updateAnnunciators();
+          this.lcd.printAt(3, 'BREAK: READY');
+        });
+        document.getElementById('keyCont').addEventListener('click', () => {
+          sound.click();
+          if (this.mode === 'BASIC') this.runBasic();
+        });
+
+        // Shift & Caps
+        document.getElementById('keyShift').addEventListener('click', () => {
+          sound.click();
+          this.isShift = !this.isShift;
+          this.updateAnnunciators();
+        });
+        document.getElementById('keyCaps').addEventListener('click', () => {
+          sound.click();
+          this.isCaps = !this.isCaps;
+          this.updateAnnunciators();
+        });
+
+        // Keypad characters
+        document.querySelectorAll('[data-key]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const k = btn.getAttribute('data-key');
+            this.handleKeyChar(k);
+          });
+        });
+
+        // Numbers & Operators
+        document.querySelectorAll('[data-num]').forEach(btn => {
+          btn.addEventListener('click', () => this.handleKeyChar(btn.getAttribute('data-num')));
+        });
+        document.querySelectorAll('[data-op]').forEach(btn => {
+          btn.addEventListener('click', () => this.handleKeyChar(btn.getAttribute('data-op')));
+        });
+
+        // Scientific functions
+        document.querySelectorAll('[data-sci]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const fn = btn.getAttribute('data-sci');
+            if (fn === 'pow') this.handleKeyChar('^');
+            else if (fn === 'sqrt') this.handleKeyChar('√(');
+            else this.handleKeyChar(fn + '(');
+          });
+        });
+
+        // Return / BS
+        document.getElementById('keyEnter').addEventListener('click', () => this.handleReturn());
+        document.getElementById('keyBs').addEventListener('click', () => this.handleBackspace());
+
+        // Directional arrows
+        document.getElementById('keyCurLeft').addEventListener('click', () => {
+          sound.click();
+          if (this.lcd.cursorX > 0) this.lcd.cursorX--;
+          this.lcd.render();
+        });
+        document.getElementById('keyCurRight').addEventListener('click', () => {
+          sound.click();
+          if (this.lcd.cursorX < 31) this.lcd.cursorX++;
+          this.lcd.render();
+        });
+        document.getElementById('keyCurUp').addEventListener('click', () => {
+          sound.click();
+          if (this.lcd.cursorY > 0) this.lcd.cursorY--;
+          this.lcd.render();
+        });
+        document.getElementById('keyCurDown').addEventListener('click', () => {
+          sound.click();
+          if (this.lcd.cursorY < 3) this.lcd.cursorY++;
+          this.lcd.render();
+        });
+
+        // Physical Keyboard Support
+        window.addEventListener('keydown', (e) => {
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            this.handleReturn();
+          } else if (e.key === 'Backspace') {
+            e.preventDefault();
+            this.handleBackspace();
+          } else if (e.key === 'Escape') {
+            this.showMenu();
+          } else if (e.key.length === 1) {
+            this.handleKeyChar(e.key);
+          }
+        });
+      }
+
+      loadExample(type) {
+        document.getElementById('presetModal').classList.add('hidden');
+        sound.beep(1400, 0.08);
+
+        if (type === 'basic_lunar') {
+          this.switchMode('BASIC');
+          this.basicProgram = [
+            { num: 10, code: 'CLS' },
+            { num: 20, code: 'LINE(0,31)-(191,31)' },
+            { num: 30, code: 'LINE(80,28)-(110,28)' },
+            { num: 40, code: 'PRINT "LUNAR LANDER 16-BIT"' },
+            { num: 50, code: 'H=25: V=2: F=100' },
+            { num: 60, code: 'CIRCLE(95, 31-H, 3)' },
+            { num: 70, code: 'PSET(95, 31-H)' },
+            { num: 80, code: 'PRINT "ALT="; H; " FUEL="; F' }
+          ];
+          this.lcd.printAt(0, 'LOADED: LUNAR LANDER (BASIC)');
+          this.lcd.printAt(1, 'TYPE "RUN" OR PRESS CONT');
+          this.refreshPromptLine();
+        } else if (type === 'basic_sine') {
+          this.switchMode('BASIC');
+          this.basicProgram = [
+            { num: 10, code: 'CLS' },
+            { num: 20, code: 'LINE(0,16)-(191,16)' },
+            { num: 30, code: 'P=0' },
+            { num: 40, code: 'Y=16+13*SIN(P/8)' },
+            { num: 50, code: 'PSET(P, Y)' },
+            { num: 60, code: 'P=P+1' },
+            { num: 70, code: 'IF P<192 THEN 40' },
+            { num: 80, code: 'PRINT "WAVEFORM COMPLETE"' }
+          ];
+          this.lcd.printAt(0, 'LOADED: SINE WAVE VISUALIZER');
+          this.lcd.printAt(1, 'READY - TYPE RUN');
+          this.refreshPromptLine();
+        } else if (type === 'basic_prime') {
+          this.switchMode('BASIC');
+          this.basicProgram = [
+            { num: 10, code: 'CLS' },
+            { num: 20, code: 'PRINT "POKEKON SIEVE (1-100)"' },
+            { num: 30, code: 'N=3' },
+            { num: 40, code: 'D=2' },
+            { num: 50, code: 'IF N-D*(N/D)=0 THEN 80' },
+            { num: 60, code: 'D=D+1' },
+            { num: 70, code: 'IF D<N THEN 50' },
+            { num: 80, code: 'IF D=N THEN PRINT N; " "' },
+            { num: 90, code: 'N=N+2: IF N<100 THEN 40' }
+          ];
+          this.lcd.printAt(0, 'LOADED: PRIME SIEVE (BASIC)');
+          this.lcd.printAt(1, 'READY - TYPE RUN');
+          this.refreshPromptLine();
+        } else if (type === 'c_ball') {
+          this.switchMode('C');
+          this.cProgram = `
+            cls();
+            line(0, 0, 191, 0);
+            line(0, 31, 191, 31);
+            line(0, 0, 0, 31);
+            line(191, 0, 191, 31);
+            circle(96, 16, 6);
+            line(90, 16, 102, 16);
+            printf("BOUNCING BALL IN C");
+          `;
+          this.lcd.printAt(0, 'LOADED C: BOUNCING BALL');
+          this.lcd.printAt(1, 'TYPE "RUN" TO COMPILE');
+          this.refreshPromptLine();
+        } else if (type === 'c_quad') {
+          this.switchMode('C');
+          this.cProgram = `
+            cls();
+            let a = 1, b = -5, c = 6;
+            let d = b*b - 4*a*c;
+            let r1 = (-b + Math.sqrt(d))/(2*a);
+            let r2 = (-b - Math.sqrt(d))/(2*a);
+            line(0, 20, 191, 20);
+            printf("X1=%d X2=%d (x^2-5x+6=0)", r1, r2);
+          `;
+          this.lcd.printAt(0, 'LOADED C: QUADRATIC SOLVER');
+          this.lcd.printAt(1, 'TYPE "RUN" TO COMPILE');
+          this.refreshPromptLine();
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      window.z1grApp = new Z1GRSystem();
+
+      // Sound toggle
+      const soundBtn = document.getElementById('soundToggleBtn');
+      const soundIcon = document.getElementById('soundIcon');
+      const soundLabel = document.getElementById('soundLabel');
+      soundBtn.addEventListener('click', () => {
+        sound.enabled = !sound.enabled;
+        soundIcon.textContent = sound.enabled ? '🔊' : '🔇';
+        soundLabel.textContent = sound.enabled ? 'Sound' : 'Muted';
+      });
+
+      // Modals setup
+      const presetModal = document.getElementById('presetModal');
+      const manualModal = document.getElementById('manualModal');
+
+      document.getElementById('presetBtn').addEventListener('click', () => presetModal.classList.remove('hidden'));
+      document.getElementById('closePresetBtn').addEventListener('click', () => presetModal.classList.add('hidden'));
+      document.getElementById('closePresetBtn2').addEventListener('click', () => presetModal.classList.add('hidden'));
+
+      document.getElementById('manualBtn').addEventListener('click', () => manualModal.classList.remove('hidden'));
+      document.getElementById('closeManualBtn').addEventListener('click', () => manualModal.classList.add('hidden'));
+      document.getElementById('closeManualBtn2').addEventListener('click', () => manualModal.classList.add('hidden'));
+    });
+  </script>
+</body>
+</html>
